@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import "/assets/css/variables";
+@import "~bootstrap/scss/bootstrap.scss";
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  background: $backColor;
+}
+
+.container {
+  header {
+    h1 {
+      color: white;
+
+    }
+  }
+  .loader {
+    width: 100px;
+    margin: 20px auto;
+  }
+  p.white {
+    color: white;
+  }
+}

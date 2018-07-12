@@ -1,0 +1,96 @@
+<div class="row justify-content-md-center">
+  <div class=" col-md-8 mt-5 mb-5">
+    <header>
+      <h1>Search Github projects by name or by language</h1>
+    </header>
+    <p class="white">You can search public repositories on github by name or by language. You can sort by best match, number of stars or number of forks</p>
+
+  </div>
+
+  <div class="col-md-8 search">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-8 col-sm-6">
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text inputGroup-sizing-sm">Searchterm</span>
+            </div>
+            <input formControlName="searchTerm" type="text" class="form-control" aria-label="Small"
+                   aria-describedby="inputGroup-sizing-sm" placeholder="enter search term">
+          </div>
+        </div>
+        <div class="col-4 col-sm-6">
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Language</span>
+            </div>
+            <input formControlName="language" type="text" class="form-control" aria-label="Small"
+                   aria-describedby="inputGroup-sizing-sm" placeholder="search by language">
+          </div>
+        </div>
+        <div class="col-4 col-sm-6">
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" for="inputGroupSelect01">Sort on:</span>
+            </div>
+            <select class="custom-select form-control-sm" id="inputGroupSelect01" formControlName="sort">
+              <option selected>Choose...</option>
+              <option value="score">Match</option>
+              <option value="stars">Number of Stars</option>
+              <option value="forks">Number of Forks</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-4 col-sm-6">
+          <div class="input-group input-group-sm mb-3">
+            <button type="submit" class="btn btn-light btn-sm btn-block">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div *ngFor="let page of (page | async)?.results">
+      <div class="card" *ngFor="let item of page.items;">
+        <div class="card-body">
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+    <section class="projects" *ngIf="items; let projects; else loading">
+      <div class="card mt-2 mb-2" *ngFor="let item of projects.items;">
+        <div class="card-header">
+          <h4>{{item.name}}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{item.description}}</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">match score: {{item.score}}, stars: {{item.stargazers_count}}, forks: {{item.forks_count}}  </li>
+
+          </ul>
+          <div class="card-footer">
+            <a href="{{item.html_url}}" class="card-link" target="_blank">{{item.html_url}}</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="mt-5 mb-5">
+        <nav class="mt-5 mb-5" aria-label="Page navigation example ">
+          <ul class="pagination">
+            <li class="page-item" *ngIf="projects.first"><a class="page-link" (click)="getProjectsUrl(projects.first)">First</a>
+            </li>
+            <li class="page-item" *ngIf="projects.prev"><a class="page-link" (click)="getProjectsUrl(projects.prev)">Prev</a></li>
+            <li class="page-item" *ngIf="projects.next"><a class="page-link"
+                                                           (click)="getProjectsUrl(projects.next)">Next</a></li>
+            <li class="page-item" *ngIf="projects.last"><a class="page-link"
+                                                           (click)="getProjectsUrl(projects.last)">Last</a></li>
+          </ul>
+      </nav>
+      </div>
+    </section>
+    <ng-template #loading>
+      <p class="white">You can search for projects by using the input fields above. Currently there are no projects visible.</p>
+      <div class="loader mx-auto" *ngIf="loading==true"><img class="mx-auto loader" src="assets/gfx/oval.svg" width="100" alt=""></div>
+    </ng-template>
+  </div>
+</div>
+
